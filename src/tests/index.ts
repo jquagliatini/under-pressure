@@ -1,27 +1,32 @@
-import * as cp from "node:child_process";
+import * as util from "node:util";
+import { scrypt as scryptAsync } from "node:crypto";
 import { PressureTrackerService } from "../pressure-tracker.service";
 import { EventLoopUtilizationTracker } from "../trackers/event-loop-utilization.tracker";
 import { EventLoopDelayTracker } from "../trackers/event-loop-delay.tracker";
-import { stringifyTrackerTick } from "../trackers/tracker-tick.printer";
 import { mapValues } from "./utils";
+import { stringifyTrackerTick } from "../trackers/tracker-tick.printer";
+
+const scrypt = util.promisify(scryptAsync);
 
 main().catch(console.error);
 async function main() {
   const tracker = new PressureTrackerService([
     new EventLoopUtilizationTracker({ maxValue: 0.1 }),
-    new EventLoopDelayTracker({ maxValue: 100, resolution: 20 }),
-  ]);
+    new EventLoopDelayTracker({ maxValue: 1_000, resolution: 20 }),
+  ], { timeout: 100 });
 
-  tracker.subscribe((record) => {
+  const subscription = tracker.subscribe((record) => {
     console.log({
       record: mapValues(record, stringifyTrackerTick),
     });
   });
 
-  const p = cp.spawn(`sleep`, ["4"]);
-  p.on("close", () => {
-    console.log(tracker.lastState());
-    tracker.stop();
-    process.exit(0);
-  });
+  for (let i = 0; i < 100; i++) {
+    await scrypt("password", "salt", 64);
+  }
+
+  console.log(tracker.lastState());
+  subscription.unsubscribe();
+  tracker.stop();
+  process.exit(0);
 }

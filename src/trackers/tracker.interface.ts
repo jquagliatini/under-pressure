@@ -5,8 +5,13 @@ export type TrackerTick = {
   unit: TrackerUnit;
 };
 
+export type TrackerName = string & { __brand: "TrackerName" };
+export function mTrackerName(name: string): TrackerName {
+  return name as TrackerName;
+}
+
 export abstract class Tracker {
-  readonly name: string = "tracker";
+  readonly name: TrackerName = mTrackerName(`tracker`);
 
   protected value: number = 0;
   private maxValue: number = Infinity;

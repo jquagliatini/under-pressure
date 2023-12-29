@@ -1,8 +1,8 @@
 import { performance } from "node:perf_hooks";
-import { Tracker, TrackerTick } from "./tracker.interface";
+import { Tracker, TrackerTick, mTrackerName } from "./tracker.interface";
 
 export class EventLoopUtilizationTracker extends Tracker {
-  readonly name = "event-loop-utilization";
+  readonly name = mTrackerName("event-loop-utilization");
 
   private readonly elu = performance.eventLoopUtilization();
 
