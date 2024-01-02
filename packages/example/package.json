@@ -1,0 +1,18 @@
+{
+  "name": "under-pressure-example",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node .",
+    "build": "tsc -p .",
+    "predev": "pnpm run build",
+    "dev": "pnpm run start --watch",
+    "build:watch": "pnpm run build --watch"
+  },
+  "dependencies": {
+    "@pressure/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  }
+}
