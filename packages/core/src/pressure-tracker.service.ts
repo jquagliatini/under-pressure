@@ -22,7 +22,7 @@ export class PressureTrackerService
   ) {
     this.timeout = setTimeout(
       () => this.tick(),
-      Math.max(1_000, options.timeout ?? PressureTrackerService.DEFAULT_TIMEOUT),
+      Math.min(1_000, options.timeout ?? PressureTrackerService.DEFAULT_TIMEOUT),
     );
     this.timeout.unref();
   }

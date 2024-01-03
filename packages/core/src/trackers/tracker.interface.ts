@@ -22,9 +22,9 @@ export abstract class Tracker {
     return this.value >= this.maxValue;
   }
 
-  protected setMaxValue(maxValue: number | undefined, defaultValue: number) {
-    this.maxValue = Number.isFinite(maxValue)
-      ? maxValue ?? defaultValue
-      : defaultValue;
+  protected setMaxValue(props: { min: number; max: number; default: number; value?: number }) {
+    this.maxValue = Number.isFinite(props.value)
+      ? Math.min(Math.max(props.value ?? props.default, props.min), props.max)
+      : props.default;
   }
 }

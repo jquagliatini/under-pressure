@@ -10,7 +10,12 @@ export class EventLoopUtilizationTracker extends Tracker {
     super();
 
     this.value = 0;
-    this.setMaxValue(options?.maxValue, 0.9);
+    this.setMaxValue({
+      min: 0,
+      max: 1,
+      default: 0.9,
+      value: options?.maxValue,
+    });
   }
 
   tick(): TrackerTick {

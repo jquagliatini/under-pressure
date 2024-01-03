@@ -13,7 +13,12 @@ export class EventLoopDelayTracker extends Tracker {
     super();
 
     this.value = 0;
-    this.setMaxValue(options?.maxValue, 1_000);
+    this.setMaxValue({
+      min: 1,
+      default: 1_000,
+      max: Infinity,
+      value: options?.maxValue,
+    });
 
     this.resolution = Math.abs(
       options?.resolution ?? EventLoopDelayTracker.DEFAULT_RESOLUTION
