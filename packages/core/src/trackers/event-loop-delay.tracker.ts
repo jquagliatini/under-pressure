@@ -16,7 +16,7 @@ export class EventLoopDelayTracker extends Tracker {
     this.setMaxValue({
       min: 1,
       default: 1_000,
-      max: Infinity,
+      max: 3_600_000,
       value: options?.maxValue,
     });
 
