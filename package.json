@@ -4,6 +4,8 @@
   "author": "jquagliatini",
   "license": "MIT",
   "devDependencies": {
+    "jest": "^29.7.0",
+    "turbo": "^1.11.2",
     "typescript": "5.3.3"
   },
   "packageManager": "pnpm@8.13.1+sha256.9e5f62ce5f2b7d4ceb3c2848f41cf0b33032c24d683c7088b53f62b1885fb246"
