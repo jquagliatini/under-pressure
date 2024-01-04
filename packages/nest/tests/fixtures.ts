@@ -3,11 +3,12 @@ import {
   Get,
   Module,
   ServiceUnavailableException,
-  Type
+  Type,
+  UseInterceptors
 } from "@nestjs/common";
+import { PressureTrackingInterceptor, PressureTrackingService } from "..";
 import { SuperAgentTest, agent } from "supertest";
 
-import { PressureTrackingService } from "..";
 import { Test } from "@nestjs/testing";
 
 @Controller()
@@ -20,6 +21,12 @@ class FixtureAppController {
       throw new ServiceUnavailableException();
     }
 
+    return { ok: true };
+  }
+
+  @Get('intercepted')
+  @UseInterceptors(PressureTrackingInterceptor())
+  intercepted() {
     return { ok: true };
   }
 }

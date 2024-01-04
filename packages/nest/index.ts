@@ -1,1 +1,2 @@
-export { PressureTrackingModule, PressureTrackingService } from "./src/index";
+export { PressureTrackingModule, PressureTrackingService } from "./src";
+export { PressureTrackingInterceptor } from "./src/interceptor";
