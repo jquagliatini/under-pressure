@@ -1,6 +1,7 @@
-import { EventLoopDelayTracker } from "../event-loop-delay.tracker";
 import { mock } from "jest-mock-extended";
 import { IntervalHistogram, monitorEventLoopDelay } from "node:perf_hooks";
+
+import { EventLoopDelayTracker } from "../event-loop-delay.tracker";
 
 jest.mock("node:perf_hooks");
 

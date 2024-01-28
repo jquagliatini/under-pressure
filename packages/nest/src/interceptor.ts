@@ -1,16 +1,17 @@
+import { Observable } from "rxjs";
+
 import {
   CallHandler,
   ExecutionContext,
   Injectable,
   NestInterceptor,
   ServiceUnavailableException,
+  Type,
   mixin,
 } from "@nestjs/common";
 
-import { Observable } from "rxjs";
 import { PressureTrackingService } from ".";
 
-@Injectable()
 class MixinPressureTrackingInterceptor implements NestInterceptor {
   constructor(private readonly pressure: PressureTrackingService) {}
 
@@ -23,6 +24,6 @@ class MixinPressureTrackingInterceptor implements NestInterceptor {
   }
 }
 
-export function PressureTrackingInterceptor() {
+export function PressureTrackingInterceptor(): Type<NestInterceptor> {
   return mixin(MixinPressureTrackingInterceptor);
 }

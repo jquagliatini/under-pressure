@@ -9,6 +9,9 @@
     "test": {
       "dependsOn": ["build"],
       "inputs": ["*.ts"]
+    },
+    "clean": {
+      "cache": false
     }
   }
 }

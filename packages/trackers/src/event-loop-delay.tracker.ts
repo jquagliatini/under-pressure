@@ -1,5 +1,6 @@
-import { Tracker, TrackerTick, mTrackerName } from "./tracker.interface";
 import { IntervalHistogram, monitorEventLoopDelay } from "node:perf_hooks";
+
+import { Tracker, TrackerTick, mTrackerName } from "@pressure/core";
 
 export class EventLoopDelayTracker extends Tracker {
   readonly name = mTrackerName("event-loop-delay");

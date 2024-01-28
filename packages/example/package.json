@@ -10,7 +10,8 @@
     "build:watch": "pnpm run build --watch"
   },
   "dependencies": {
-    "@pressure/core": "workspace:*"
+    "@pressure/core": "workspace:*",
+    "@pressure/trackers": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.10.5"

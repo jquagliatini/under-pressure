@@ -1,5 +1,6 @@
 import { performance } from "node:perf_hooks";
-import { Tracker, TrackerTick, mTrackerName } from "./tracker.interface";
+
+import { Tracker, TrackerTick, mTrackerName } from "@pressure/core";
 
 export class EventLoopUtilizationTracker extends Tracker {
   readonly name = mTrackerName("event-loop-utilization");

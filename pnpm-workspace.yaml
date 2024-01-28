@@ -2,3 +2,4 @@ packages:
   - packages/core
   - packages/example
   - packages/nest
+  - packages/trackers

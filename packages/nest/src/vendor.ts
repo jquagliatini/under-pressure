@@ -1,8 +1,6 @@
-import { PressureTrackerService as CorePressureTrackingService } from "@pressure/core";
+import { PressureTrackerService as CorePressureTrackingService, Tracker } from "@pressure/core";
 
-type PressureTrackingServiceTracker = ConstructorParameters<
-  typeof CorePressureTrackingService
->[0][number];
+type PressureTrackingServiceTracker = Tracker;
 type PressureTrackingServiceConfig = NonNullable<
   ConstructorParameters<typeof CorePressureTrackingService>[1]
 >;

@@ -1,5 +1,6 @@
 import { mock } from "jest-mock-extended";
 import { EventLoopUtilization, performance } from "node:perf_hooks";
+
 import { EventLoopUtilizationTracker } from "../event-loop-utilization.tracker";
 
 describe("EventLoopUtilizationTracker", () => {
