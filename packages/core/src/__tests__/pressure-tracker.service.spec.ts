@@ -1,12 +1,18 @@
+import { mock } from "jest-mock-extended";
+
 import { PressureTrackerService } from "../pressure-tracker.service";
 import { Tracker } from "../trackers/tracker.interface";
-import { mock } from "jest-mock-extended";
 
 jest.useFakeTimers();
 
 describe("PressureTrackerService", () => {
   let service: PressureTrackerService;
   const tracker = mock<Tracker>();
+  tracker.tick.mockReturnValue({
+    value: 0,
+    unit: "percentage",
+    isUnderPressure: false,
+  });
 
   beforeEach(() => {
     service = new PressureTrackerService([tracker], {

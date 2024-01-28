@@ -1,17 +1,18 @@
 export type TrackerUnit = "milliseconds" | "percentage";
 
 export type TrackerTick = {
+  isUnderPressure: boolean;
   value: number;
   unit: TrackerUnit;
 };
 
-export type TrackerName = string & { __brand: "TrackerName" };
-export function mTrackerName(name: string): TrackerName {
-  return name as TrackerName;
+export type TrackerName<Name extends string = string> = Name & { __brand: "TrackerName" };
+export function mTrackerName<Name extends string>(name: Name): TrackerName<Name> {
+  return name as TrackerName<Name>;
 }
 
 export abstract class Tracker {
-  readonly name: TrackerName = mTrackerName(`tracker`);
+  readonly name = mTrackerName<string>(`tracker`);
 
   protected value: number = 0;
   private maxValue: number = Infinity;

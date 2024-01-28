@@ -36,6 +36,7 @@ export class EventLoopDelayTracker extends Tracker {
     return {
       value: this.value,
       unit: "milliseconds",
+      isUnderPressure: this.isUnderPressure(),
     };
   }
 

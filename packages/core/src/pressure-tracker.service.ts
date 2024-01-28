@@ -5,41 +5,45 @@ import {
 } from "./trackers/tracker.interface";
 import { Subscribable } from "./types";
 
-export class PressureTrackerService
-  implements Subscribable<UnderPressureTrackerTicks>
+export class PressureTrackerService<T extends Tracker = Tracker>
+  implements Subscribable<PressureTrackerServiceState<T>>
 {
   private static DEFAULT_TIMEOUT = 10;
 
   private readonly timeout: NodeJS.Timeout;
-  private readonly values = new Map<TrackerName, TrackerTick>();
+  private readonly values = new Map<T["name"], TrackerTick>();
   private readonly subscriptions = new Set<
-    (record: UnderPressureTrackerTicks) => void
+    (record: PressureTrackerServiceState<T>) => void
   >();
 
   constructor(
-    private readonly trackers: readonly Tracker[],
+    private readonly trackers: readonly T[],
     options: PressureTrackerServiceOptions = {}
   ) {
     this.timeout = setTimeout(
       () => this.tick(),
-      Math.min(1_000, options.timeout ?? PressureTrackerService.DEFAULT_TIMEOUT),
+      Math.min(1_000, options.timeout ?? PressureTrackerService.DEFAULT_TIMEOUT)
     );
     this.timeout.unref();
   }
 
-  lastState(): UnderPressureTrackerTicks {
-    const out: UnderPressureTrackerTicks = {};
+  lastState(): PressureTrackerServiceState<T> {
+    let isUnderPressure = false;
+    const trackers: Record<TrackerName, TrackerTick> = {};
     for (const [trackerName, tick] of this.values) {
-      out[trackerName] = tick;
+      trackers[trackerName] = tick;
+
+      isUnderPressure ||= tick.isUnderPressure;
     }
-    return out;
+
+    return { isUnderPressure, trackers };
   }
 
   isUnderPressure(): boolean {
     return this.trackers.some((tracker) => tracker.isUnderPressure());
   }
 
-  subscribe(callback: (state: UnderPressureTrackerTicks) => void) {
+  subscribe(callback: (state: PressureTrackerServiceState<T>) => void) {
     this.subscriptions.add(callback);
 
     return {
@@ -54,35 +58,37 @@ export class PressureTrackerService
   }
 
   private tick() {
-    let pressureRecord: UnderPressureTrackerTicks = {};
-    let shouldNotifySubscribers = false;
-
     for (const tracker of this.trackers) {
-      const tick = tracker.tick();
-      this.values.set(tracker.name, tick);
-
-      if (tracker.isUnderPressure()) {
-        shouldNotifySubscribers = true;
-        pressureRecord[tracker.name] = tick;
-      }
+      this.values.set(tracker.name, tracker.tick());
     }
 
-    if (shouldNotifySubscribers) {
-      this.onPressure(pressureRecord);
-    }
-
+    this.notify();
     this.timeout.refresh();
   }
 
-  private onPressure(record: UnderPressureTrackerTicks) {
+  private notify() {
+    const message = this.lastState();
     this.subscriptions.forEach((callback) => {
-      callback(record);
+      callback(message);
     });
   }
 }
 
-type UnderPressureTrackerTicks = Record<TrackerName, TrackerTick>;
+type PressureTrackerServiceState<T extends Tracker> = {
+  isUnderPressure: boolean;
+  trackers: {
+    [K in T as K["name"] extends TrackerName<infer N>
+      ? N
+      : string]?: TrackerTick;
+  };
+};
+
+type UnderPressureTrackerTicks = {
+  isUnderPressure: boolean;
+  trackers: Record<TrackerName, TrackerTick>;
+};
+
 type PressureTrackerServiceOptions = {
   /** the timeout interval, in milliseconds. Max 1000 ms */
   timeout?: number;
-}
+};

@@ -25,6 +25,7 @@ export class EventLoopUtilizationTracker extends Tracker {
     return {
       value: this.value,
       unit: "percentage",
+      isUnderPressure: this.isUnderPressure(),
     };
   }
 }
