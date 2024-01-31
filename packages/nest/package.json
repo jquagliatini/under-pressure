@@ -1,5 +1,5 @@
 {
-  "name": "@pressure/nestjs",
+  "name": "@jqgl/under-pressure-nestjs",
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "dist/index.d.ts"
   ],
   "dependencies": {
-    "@pressure/core": "workspace:*"
+    "@jqgl/under-pressure-core": "workspace:*"
   },
   "devDependencies": {
     "@nestjs/common": "^10.3.0",
