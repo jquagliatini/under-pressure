@@ -1,9 +1,15 @@
 {
-  "name": "@pressure/core",
+  "name": "@jqgl/under-pressure-core",
   "version": "0.0.1",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "!dist/**/*.spec.js",
+    "!dist/**/*.spec.d.ts"
+  ],
   "scripts": {
     "build": "tsc -p .",
     "test": "jest src",
