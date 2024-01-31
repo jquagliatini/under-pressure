@@ -1,4 +1,7 @@
-import { PressureTrackerService as CorePressureTrackingService, Tracker } from "@pressure/core";
+import {
+  PressureTrackerService as CorePressureTrackingService,
+  Tracker,
+} from "@jqgl/under-pressure-core";
 
 type PressureTrackingServiceTracker = Tracker;
 type PressureTrackingServiceConfig = NonNullable<

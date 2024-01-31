@@ -1,11 +1,11 @@
 import { scrypt as scryptAsync } from "node:crypto";
 import * as util from "node:util";
 
-import { PressureTrackerService } from "@pressure/core";
+import { PressureTrackerService } from "@jqgl/under-pressure-core";
 import {
   EventLoopDelayTracker,
   EventLoopUtilizationTracker,
-} from "@pressure/trackers";
+} from "@jqgl/under-pressure-trackers";
 
 const scrypt = util.promisify(scryptAsync);
 

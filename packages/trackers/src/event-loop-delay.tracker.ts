@@ -1,6 +1,6 @@
 import { IntervalHistogram, monitorEventLoopDelay } from "node:perf_hooks";
 
-import { Tracker, TrackerTick, mTrackerName } from "@pressure/core";
+import { Tracker, TrackerTick, mTrackerName } from "@jqgl/under-pressure-core";
 
 export class EventLoopDelayTracker extends Tracker {
   readonly name = mTrackerName("event-loop-delay");

@@ -1,5 +1,5 @@
 {
-  "name": "@pressure/trackers",
+  "name": "@jqgl/under-pressure-trackers",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "!dist/**/*.spec.js"
   ],
   "dependencies": {
-    "@pressure/core": "workspace:*"
+    "@jqgl/under-pressure-core": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",

@@ -4,6 +4,7 @@
   "author": "jquagliatini",
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "jest": "^29.7.0",
     "rimraf": "^5.0.5",
     "turbo": "^1.11.2",

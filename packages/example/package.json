@@ -2,16 +2,18 @@
   "name": "under-pressure-example",
   "version": "0.0.0",
   "main": "dist/index.js",
+  "private": true,
   "scripts": {
     "start": "node .",
     "build": "tsc -p .",
     "predev": "pnpm run build",
     "dev": "pnpm run start --watch",
-    "build:watch": "pnpm run build --watch"
+    "build:watch": "pnpm run build --watch",
+    "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pressure/core": "workspace:*",
-    "@pressure/trackers": "workspace:*"
+    "@jqgl/under-pressure-core": "workspace:*",
+    "@jqgl/under-pressure-trackers": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.10.5"

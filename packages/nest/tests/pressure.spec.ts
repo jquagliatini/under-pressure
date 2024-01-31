@@ -4,7 +4,7 @@ import { mock, mockReset } from "jest-mock-extended";
 
 import { PressureTrackingModule } from "../src";
 import { SuperAgentTest } from "supertest";
-import { Tracker } from "@pressure/core";
+import { Tracker } from "@jqgl/under-pressure-core";
 
 describe("@pressure/nest", () => {
   let close: () => Promise<void>;

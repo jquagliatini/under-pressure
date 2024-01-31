@@ -2,7 +2,7 @@ import { mock, mockClear } from "jest-mock-extended";
 import { SuperAgentTest } from "supertest";
 
 import { HttpStatus, Module } from "@nestjs/common";
-import { Tracker } from "@pressure/core";
+import { Tracker } from "@jqgl/under-pressure-core";
 
 import { PressureTrackingModule } from "../src";
 import { FixtureModule, getRequestableServer } from "./fixtures";

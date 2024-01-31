@@ -1,6 +1,6 @@
 import { performance } from "node:perf_hooks";
 
-import { Tracker, TrackerTick, mTrackerName } from "@pressure/core";
+import { Tracker, TrackerTick, mTrackerName } from "@jqgl/under-pressure-core";
 
 export class EventLoopUtilizationTracker extends Tracker {
   readonly name = mTrackerName("event-loop-utilization");
