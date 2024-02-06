@@ -12,6 +12,7 @@ import {
 
 import { PressureTrackingService } from ".";
 
+@Injectable()
 class MixinPressureTrackingInterceptor implements NestInterceptor {
   constructor(private readonly pressure: PressureTrackingService) {}
 

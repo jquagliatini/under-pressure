@@ -7,9 +7,9 @@ import { Tracker } from "@jqgl/under-pressure-core";
 import { PressureTrackingModule } from "../src";
 import { FixtureModule, getRequestableServer } from "./fixtures";
 
-describe("@pressure/nest", () => {
+describe("@jqgl/under-pressure-nestjs", () => {
   let request: SuperAgentTest;
-  let close: () => Promise<void>;
+  let close: (() => Promise<void>) | undefined;
 
   const tracker = mock<Tracker>();
 
@@ -18,7 +18,7 @@ describe("@pressure/nest", () => {
     mockClear(tracker);
   });
 
-  afterEach(() => close());
+  afterEach(() => close?.());
 
   @Module({
     imports: [
@@ -32,11 +32,21 @@ describe("@pressure/nest", () => {
 
   test("interceptor should not throw when not under pressure", async () => {
     tracker.isUnderPressure.mockReturnValue(false);
+    tracker.tick.mockReturnValue({
+      isUnderPressure: false,
+      unit: "percentage",
+      value: 0,
+    });
     await request.get("/intercepted").expect(HttpStatus.OK);
   });
 
   test("interceptor should throw when under pressure", async () => {
     tracker.isUnderPressure.mockReturnValue(true);
+    tracker.tick.mockReturnValue({
+      isUnderPressure: true,
+      unit: "percentage",
+      value: 1,
+    });
     await request.get("/intercepted").expect(HttpStatus.SERVICE_UNAVAILABLE);
   });
 });

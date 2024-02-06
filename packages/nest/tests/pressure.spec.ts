@@ -6,8 +6,8 @@ import { PressureTrackingModule } from "../src";
 import { SuperAgentTest } from "supertest";
 import { Tracker } from "@jqgl/under-pressure-core";
 
-describe("@pressure/nest", () => {
-  let close: () => Promise<void>;
+describe("@jqgl/under-pressure-nestjs", () => {
+  let close: (() => Promise<void>) | undefined;
   let request: SuperAgentTest;
 
   const tracker = mock<Tracker>();
@@ -27,15 +27,25 @@ describe("@pressure/nest", () => {
     ({ request, close } = await getRequestableServer(AppModule));
   });
 
-  afterEach(() => close());
+  afterEach(() => close?.());
 
   test("health should be available when not under pressure", async () => {
     tracker.isUnderPressure.mockReturnValue(false);
+    tracker.tick.mockReturnValue({
+      isUnderPressure: false,
+      unit: "percentage",
+      value: 0,
+    });
     await request.get("/health").expect(HttpStatus.OK);
   });
 
   test("health should be unavailable when under pressure", async () => {
     tracker.isUnderPressure.mockReturnValue(true);
+    tracker.tick.mockReturnValue({
+      isUnderPressure: true,
+      unit: "percentage",
+      value: 1,
+    });
     await request.get("/health").expect(HttpStatus.SERVICE_UNAVAILABLE);
   });
 });

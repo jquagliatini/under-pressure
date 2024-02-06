@@ -19,7 +19,6 @@ import {
 } from "./vendor";
 
 const PRESSURE_TRACKING_CONFIG_TOKEN = Symbol();
-const PRESSURE_TRACKING_TRACKERS_TOKEN = Symbol();
 
 @Injectable()
 export class PressureTrackingService
@@ -30,18 +29,27 @@ export class PressureTrackingService
 {
   #service!: CorePressureTrackingService;
 
+  readonly #trackers: readonly PressureTrackingServiceTracker[];
+  readonly #config: PressureTrackingServiceConfig;
+
   constructor(
-    @Inject(PRESSURE_TRACKING_TRACKERS_TOKEN)
-    private readonly _trackers: readonly PressureTrackingServiceTracker[],
     @Optional()
     @Inject(PRESSURE_TRACKING_CONFIG_TOKEN)
-    private readonly _config: PressureTrackingServiceConfig | undefined
-  ) {}
+    config:
+      | {
+          config?: PressureTrackingServiceConfig;
+          trackers: readonly PressureTrackingServiceTracker[];
+        }
+      | undefined
+  ) {
+    this.#trackers = config?.trackers ?? [];
+    this.#config = config?.config ?? {};
+  }
 
   onModuleInit() {
     this.#service = new CorePressureTrackingService(
-      this._trackers,
-      this._config
+      this.#trackers,
+      this.#config
     );
   }
 
@@ -59,43 +67,47 @@ export class PressureTrackingService
 }
 
 type PressureTrackingModuleConfig =
-  | PressureTrackingServiceConfig
-  | Omit<ValueProvider<PressureTrackingServiceConfig>, "provide">
-  | Omit<FactoryProvider<PressureTrackingServiceConfig>, "provide">;
+  | {
+      config?: PressureTrackingServiceConfig;
+      trackers: PressureTrackingServiceTracker[];
+    }
+  | Omit<
+      ValueProvider<{
+        config?: PressureTrackingServiceConfig;
+        trackers: PressureTrackingServiceTracker[];
+      }>,
+      "provide"
+    >
+  | Omit<
+      FactoryProvider<{
+        config?: PressureTrackingServiceConfig;
+        trackers: PressureTrackingServiceTracker[];
+      }>,
+      "provide"
+    >;
 
 @Module({})
 export class PressureTrackingModule {
-  static forRoot(config: {
-    trackers: readonly PressureTrackingServiceTracker[];
-    config?: PressureTrackingModuleConfig;
-  }): DynamicModule {
+  static forRoot(config?: PressureTrackingModuleConfig): DynamicModule {
     return {
       global: true,
       module: PressureTrackingModule,
       exports: [PressureTrackingService],
-      providers: [
-        parseConfig(config),
-        {
-          provide: PRESSURE_TRACKING_TRACKERS_TOKEN,
-          useValue: config.trackers,
-        },
-        PressureTrackingService,
-      ],
+      providers: [provideConfig(config), PressureTrackingService],
     };
   }
 }
 
-function parseConfig({
-  config,
-}: {
-  config?: PressureTrackingModuleConfig;
-}): Provider<PressureTrackingServiceConfig> {
-  if (
-    config &&
-    ("useValue" in config || "useFactory" in config || "useExisting" in config)
-  ) {
+function provideConfig(config?: PressureTrackingModuleConfig): Provider<{
+  config?: PressureTrackingServiceConfig;
+  trackers: readonly PressureTrackingServiceTracker[];
+}> {
+  if (config && ("useValue" in config || "useFactory" in config)) {
     return { ...config, provide: PRESSURE_TRACKING_CONFIG_TOKEN };
   }
 
-  return { useValue: config ?? {}, provide: PRESSURE_TRACKING_CONFIG_TOKEN };
+  return {
+    useValue: config ?? { trackers: [] },
+    provide: PRESSURE_TRACKING_CONFIG_TOKEN,
+  };
 }

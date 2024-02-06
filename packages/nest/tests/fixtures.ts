@@ -4,9 +4,9 @@ import {
   Module,
   ServiceUnavailableException,
   Type,
-  UseInterceptors
+  UseInterceptors,
 } from "@nestjs/common";
-import { PressureTrackingInterceptor, PressureTrackingService } from "..";
+import { PressureTrackingInterceptor, PressureTrackingModule, PressureTrackingService } from "..";
 import { SuperAgentTest, agent } from "supertest";
 
 import { Test } from "@nestjs/testing";
@@ -24,7 +24,7 @@ class FixtureAppController {
     return { ok: true };
   }
 
-  @Get('intercepted')
+  @Get("intercepted")
   @UseInterceptors(PressureTrackingInterceptor())
   intercepted() {
     return { ok: true };
@@ -46,5 +46,5 @@ export async function getRequestableServer(module: Type) {
 
   const close = () => app.close();
 
-  return { request, close }
+  return { request, close };
 }
